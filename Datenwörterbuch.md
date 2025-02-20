@@ -30,94 +30,94 @@ wd Wind Direction Windrichtung
 wind-gust Windböen
 wind-speed Windstärke
 
-# Länderkürzel
-AE
-AR
-AT
-AU
-BA
-BD
-BE
-BG
-BH
-BR
-CA
-CH
-CI
-CL
-CN
-CO
-CW
-CY
-CZ
-DE
-DK
-DZ
-EC
-EE
-ES
-ET
-FI
-FR
-GB
-GE
-GH
-GN
-GR
-GT
-HK
-HR
-HU
-ID
-IE
-IL
-IN
-IQ
-IR
-IS
-IT
-JO
-JP
-KG
-KR
-KW
-KZ
-LA
-LK
-LT
-MK
-MM
-MN
-MO
-MX
-MY
-NL
-NO
-NP
-NZ
-PE
-PH
-PK
-PL
-PR
-PT
-RE
-RO
-RS
-RU
-SA
-SE
-SG
-SK
-SV
-TH
-TJ
-TM
-TR
-TW
-UG
-US
-UZ
-VN
-XK
-ZA
+# Länderkürzel (nach ISO-3166-2)
+AE  Vereinigte Arabische Emirate
+AR  Argentinien
+AT  Österreich
+AU  Australien
+BA  Bosnien und Herzegowina
+BD  Bangladesch
+BE  Belgien
+BG  Bulgarien
+BH  Bahrain
+BR  Brasilien
+CA  Kanada
+CH  Schweiz 
+CI  Elfenbeinküste 
+CL  Chile
+CN  Volksrepublik China
+CO  Kolumbien
+CW  Curaçao
+CY  Zypern
+CZ  Tschechien
+DE  Deutschland
+DK  Dänemark
+DZ  Algerien
+EC  Ecuador
+EE  Estland
+ES  Spanien
+ET  Äthiopien
+FI  Finnland
+FR  Frankreich
+GB  Vereinigtes Königreich
+GE  Georgien
+GH  Ghana
+GN  Guinea
+GR  Griechenland
+GT  Guatemala
+HK  Hongkong
+HR  Kroatien
+HU  Ungarn
+ID  Indonesien
+IE  Irland
+IL  Israel
+IN  Indien
+IQ  Irak
+IR  Iran
+IS  Island
+IT  Italien
+JO  Jordanien
+JP  Japan
+KG  Kirgisistan
+KR  Südkorea
+KW  Kuwait
+KZ  Kasachstan
+LA  Laos
+LK  Sri Lanka
+LT  Litauen
+MK  Nordmazedonien
+MM  Myanmar
+MN  Mongolei
+MO  Macau
+MX  Mexiko
+MY  Malaysia    
+NL  Niederlande
+NO  Norwegen
+NP  Nepal
+NZ  Neuseeland
+PE  Peru
+PH  Philippinen
+PK  Pakistan
+PL  Polen
+PR  Puerto Rico
+PT  Portugal
+RE  Réunion
+RO  Rumänien
+RS  Serbien
+RU  Russland
+SA  Saudi-Arabien
+SE  Schweden
+SG  Singapur
+SK  Slowakei
+SV  El Salvador
+TH  Thailand
+TJ  Tadschikistan
+TM  Turkmenistan
+TR  Türkei
+TW  Taiwan
+UG  Uganda
+US  Vereinigte Staaten
+UZ  Usbekistan
+VN  Vietnam
+XK  Kosovo
+ZA  Südafrika
