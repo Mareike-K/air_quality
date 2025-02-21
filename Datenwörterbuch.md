@@ -50,8 +50,7 @@
 | CA |  Kanada                          |
 | CH |  Schweiz                         |
 | CI |  Elfenbeinküste                  | 
-| CL |                                  |
-|    |  Chile                           |
+| CL |  Chile                           |
 | CN |  Volksrepublik China             |
 | CO |  Kolumbien                       |
 | CW |  Curaçao                         |
