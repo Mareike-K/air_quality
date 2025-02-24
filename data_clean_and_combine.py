@@ -1,7 +1,19 @@
+import os
+import pandas as pd
+
 def data_import():
-    """Import der Daten"""
-    df = pd.read_csv('/Users/whypk/01Projekte/air_quality/data/waqi-covid19-airqualitydata-2025.csv', comment='#')
-    return df
+     """Import der Daten aus allen Dateien, die mit 'waqi-covid-' anfangen."""
+    data_folder = '*/air_quality/data/'
+    all_files = [f for f in os.listdir(data_folder) if f.startswith('waqi-covid-') and f.endswith('.csv')]
+
+    dataframes = []
+    for file in all_files:
+        file_path = os.path.join(data_folder, file)
+        df = pd.read_csv(file_path, comment='#')
+        dataframes.append(df)
+
+    return dataframes
+    
 
 
 
@@ -16,7 +28,7 @@ def data_cleaning():
     
     city_counts = df.groupby(["Country", "City"]).size().reset_index(name="count")
     cities = city_counts.loc[city_counts.groupby("Country")["count"].idxmax()]
-    cities.to_csv('/Users/whypk/01Projekte/air_quality/data/city_per_country.csv', index=False)
+    cities.to_csv('*/air_quality/data/city_per_country.csv', index=False)
     cities=cities['City'].tolist()
     df = df[df['City'].isin(cities)]
 
@@ -29,6 +41,10 @@ def data_cleaning():
 
     return df
 
+
+    # Alle DataFrames zu einem großen zusammenfügen
+    combined_df = pd.concat(dataframes, ignore_index=True)
+    return combined_df
 
 data_import()
 data_cleaning()
