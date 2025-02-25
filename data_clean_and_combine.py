@@ -2,10 +2,9 @@ import os
 import pandas as pd
 
 def data_import():
-     """Import der Daten aus allen Dateien, die mit 'waqi-covid-' anfangen."""
+    """Import der Daten aus allen Dateien, die mit 'waqi-covid-' anfangen."""
     data_folder = '*/air_quality/data/'
     all_files = [f for f in os.listdir(data_folder) if f.startswith('waqi-covid-') and f.endswith('.csv')]
-
     dataframes = []
     for file in all_files:
         file_path = os.path.join(data_folder, file)
