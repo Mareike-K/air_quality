@@ -23,9 +23,9 @@ def data_import():
         df = df.drop_duplicates()
         dataframes.append(df)
 
-        if not dataframes:
-            print("Keine Daten gefunden.")
-            return None
+    if not dataframes:
+        print("Keine Daten gefunden.")
+        return None
         
         #else:
         #    df = pd.concat(dataframes, ignore_index=True)
@@ -43,6 +43,7 @@ def data_cleaning(df):
     - nicht benötigte Spalten löschen
     - Eine Stadt pro Land mit den meisten Messwerten 
     - und die Liste als csv ins Datenverzeichnis speichern
+    - Zusammenfassung der Daten nach Datum, Land, Stadt und Spezies, so dass nur ein Messwert je Species (Median) pro Tag/ Stadt verbleibt
     - filtern des df nach den ausgewählten Städten
     - Spalte Species aufteilen
     - df als csv speichern im Datenverzeichnis
@@ -59,6 +60,8 @@ def data_cleaning(df):
     
     cities=cities['City'].tolist()
     df = df[df['City'].isin(cities)]
+
+    df = df.groupby(["Date", "Country", "City", "Specie"], as_index=False).agg({"median": "mean"})  
 
     df = df.pivot(index=["Date", "Country", "City"], columns="Specie", values='median').reset_index()
 

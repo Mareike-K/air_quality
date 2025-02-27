@@ -33,6 +33,7 @@ def test_no_files(mock_listdir):
 @patch('pandas.DataFrame.to_csv')
 def test_data_cleaning(mock_to_csv):
     test_df = pd.DataFrame({
+        'Date': ['2021-01-01', '2021-01-01', '2021-01-02', '2021-01-02'],
         'Country': ['DE', 'DE', 'FR', 'FR'],
         'City': ['Berlin', 'Hamburg', 'Paris', 'Lyon'],
         'Specie': ['pm25', 'pm10', 'pm25', 'pm10'],
@@ -51,6 +52,8 @@ def test_data_cleaning(mock_to_csv):
     assert 'min' not in cleaned_df.columns
     assert 'max' not in cleaned_df.columns
     assert len(cleaned_df) > 0
+    assert 'pm25' in cleaned_df.columns
+    assert 'pm10' in cleaned_df.columns
 
     # Prüfen, ob die Datei gespeichert wurde
     assert mock_to_csv.call_count == 2
