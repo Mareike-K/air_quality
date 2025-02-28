@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import json
 
 def data_import():
     """
@@ -72,7 +73,35 @@ def data_cleaning(df):
 
     return df
 
+def add_geodata(df):
+    """
+    Fügt die Geodaten zu den Städten hinzu
+    """
 
+    # JSON-Datei laden
+    with open('./data/airquality-covid19-cities.json', 'r', encoding='utf-8') as file:
+        geodata = json.load(file)
+    
+    geodata = geodata["data"] 
+
+    # Erstellen eines DataFrames mit Städten und Geokoordinaten
+    df_places = pd.DataFrame([
+        {
+            "City": entry["Place"]["name"],  # Stadtname
+            "Latitude": entry["Place"]["geo"][0],  
+            "Longitude": entry["Place"]["geo"][1]
+        }
+        for entry in geodata if "Place" in entry])  # Nur Einträge mit "Place" verwenden
+    
+
+    # Standardisiere den Stadtnamen für eine bessere Übereinstimmung
+    df["City"] = df["City"].str.lower().str.strip()
+    df_places["City"] = df_places["City"].str.lower().str.strip()
+
+    # Zusammenführen der beiden DataFrames über "City"
+    df = df.merge(df_places, on="City", how="left")
+
+    return df
 
 #data_import()
 #data_cleaning()
