@@ -49,6 +49,8 @@ def data_cleaning(df):
     - Spalte Species aufteilen
     - df als csv speichern im Datenverzeichnis
     """
+    df = df.copy()
+
     df = df.drop(columns=['variance', 'min', 'max'], errors='ignore')
 
     city_counts = df.groupby(["Country", "City"]).size().reset_index(name="count")
@@ -77,6 +79,7 @@ def add_geodata(df):
     """
     Fügt die Geodaten zu den Städten hinzu
     """
+    df = df.copy()
 
     # JSON-Datei laden
     with open('./data/airquality-covid19-cities.json', 'r', encoding='utf-8') as file:
