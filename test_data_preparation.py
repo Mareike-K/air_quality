@@ -1,8 +1,38 @@
 import os
 import pandas as pd
-from data_combine_clean import data_import, data_cleaning  
+from data_preparation import data_import, data_cleaning  
 import pytest
 from unittest.mock import patch, MagicMock
+
+@patch('requests.get')
+@patch('builtins.open', new_callable=MagicMock)
+@patch('os.makedirs')
+@patch('os.path.exists', return_value=False)
+def test_download_files(mock_exists, mock_makedirs, mock_open, mock_get):
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.content = b"test content"
+    mock_get.return_value = mock_response
+
+    file_info = {
+        "test-file.csv": "https://example.com/test-file.csv",
+        "test-file.json": "https://example.com/test-file.json"
+    }
+    output_folder = "test_data"
+
+    download_files(file_info, output_folder)
+
+    assert mock_makedirs.called
+    assert mock_get.call_count == len(file_info)
+    assert mock_open.call_count == len(file_info)
+
+    for filename in file_info:
+        mock_open.assert_any_call(os.path.join(output_folder, filename), 'wb')
+
+if __name__ == '__main__':
+    pytest.main()
+
+
 
 @patch('os.listdir')
 @patch('pandas.read_csv')

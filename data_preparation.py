@@ -1,11 +1,66 @@
 import os
 import pandas as pd
 import json
+import requests
+
+def download_files(file_info, output_folder):
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    for filename, url in file_info.items():
+        output_path = os.path.join(output_folder, filename)
+
+        try:
+            response = requests.get(url, headers={"Accept-Encoding": "gzip"})
+            if isinstance(response.status_code, int) and response.status_code == 200:
+                with open(output_path, 'wb') as file:
+                    file.write(response.content)
+                print(f"Downloaded: {filename}")
+            else:
+                print(f"Failed to download {filename}: HTTP {response.status_code}")
+        except Exception as e:
+            print(f"Error downloading {filename}: {e}")
+
+# Nutzung
+file_info = {
+    "waqi-covid-2025.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2025",
+    "waqi-covid-2015H1.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2015H1",
+    "waqi-covid-2016H1.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2016H1",
+    "waqi-covid-2017H1.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2017H1",
+    "waqi-covid-2018H1.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2018H1",
+    "waqi-covid-2019Q1.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2019Q1",
+    "waqi-covid-2019Q2.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2019Q2",
+    "waqi-covid-2019Q3.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2019Q3",
+    "waqi-covid-2019Q4.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2019Q4",
+    "waqi-covid-2020Q1.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2020Q1",
+    "waqi-covid-2020Q2.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2020Q2",
+    "waqi-covid-2020Q3.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2020Q3",
+    "waqi-covid-2020Q4.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2020Q4",
+    "waqi-covid-2021Q1.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2021Q1",
+    "waqi-covid-2021Q2.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2021Q2",
+    "waqi-covid-2021Q3.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2021Q3",
+    "waqi-covid-2021Q4.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2021Q4",
+    "waqi-covid-2022Q1.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2022Q1",
+    "waqi-covid-2022Q2.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2022Q2",
+    "waqi-covid-2022Q3.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2022Q3",
+    "waqi-covid-2022Q4.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2022Q4",
+    "waqi-covid-2023Q1.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2023Q1",
+    "waqi-covid-2023Q2.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2023Q2",
+    "waqi-covid-2023Q3.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2023Q3",
+    "waqi-covid-2023Q4.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2023Q4",
+    "airquality-covid19-cities.json": "https://aqicn.org/data-platform/covid19/airquality-covid19-cities.json"
+}
+output_folder = "data"
+
+download_files(file_info, output_folder)
+
+
+
 
 def data_import():
     """
     Import der Daten aus allen Dateien, die mit 'waqi-covid-' anfangen.
-    Ohne die vier ersten Kommetarzeilen,
+    Ohne die vier ersten Kommentarzeilen,
     Umbenennung von 'wind gust' und 'wind speed' in 'wind-gust' und 'wind-speed',
     Entfernen von Duplikaten
     Rückgabe einer Liste von DataFrames
