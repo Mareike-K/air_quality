@@ -14,7 +14,7 @@ def data_import():
     Zusammenführen der DataFrames zu einem großen DataFrame
     """
     data_folder = './data/'
-    all_files = [f for f in os.listdir(data_folder) if f.startswith('waqi-covid-') and f.endswith('.csv')]
+    all_files = [f for f in os.listdir(data_folder) if f.startswith('waqi-covid-') and f.endswith('.csv') or f == 'airquality-covid19-cities.json']
     dataframes = []
     for file in all_files:
         file_path = os.path.join(data_folder, file)
