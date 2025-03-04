@@ -2,6 +2,8 @@ import os
 import pandas as pd
 import json
 import requests
+from meteostat import Daily, Stations
+from datetime import datetime
 
 def download_files(files, output_folder):
     """lädt die benötigten Dateien herunter und 
@@ -61,35 +63,42 @@ output_folder = "data"
 def data_import():
     """
     Import der Daten aus allen Dateien, die mit 'waqi-covid-' anfangen.
-    Ohne die vier ersten Kommentarzeilen,
-    Umbenennung von 'wind gust' und 'wind speed' in 'wind-gust' und 'wind-speed',
-    Entfernen von Duplikaten
-    Rückgabe einer Liste von DataFrames
-    Check, ob Dataframes vorhanden sind, wenn nicht, Rückgabe von None
-    Duplikate entfernen
-    Zusammenführen der DataFrames zu einem großen DataFrame
+    Entfernen von Kommentaren, Duplikaten und Umbenennung bestimmter Spaltenwerte.
+    Zusammenführung der DataFrames.
     """
     data_folder = './data/'
     all_files = [f for f in os.listdir(data_folder) if f.startswith('waqi-covid-') and f.endswith('.csv') or f == 'airquality-covid19-cities.json']
     dataframes = []
+
+    if not all_files:
+        print("Keine Dateien gefunden.")
+        return None
+
     for file in all_files:
         file_path = os.path.join(data_folder, file)
-        df = pd.read_csv(file_path, comment='#')
-        df["Specie"] = df["Specie"].replace("wind gust", "wind-gust")
-        df["Specie"] = df["Specie"].replace("wind speed", "wind-speed")
-        df = df.drop_duplicates()
-        dataframes.append(df)
+        try:
+            df = pd.read_csv(file_path, comment='#')
+
+            if "Specie" not in df.columns:
+                print(f"Spalte 'Specie' fehlt in {file}")
+                continue
+
+            df["Specie"] = df["Specie"].replace("wind gust", "wind-gust")
+            df["Specie"] = df["Specie"].replace("wind speed", "wind-speed")
+            df = df.drop_duplicates()
+
+            if df.empty:
+                print(f"{file} enthält nach Duplikat-Entfernung keine Daten mehr.")
+                continue
+
+            dataframes.append(df)
+        except Exception as e:
+            print(f"Fehler beim Verarbeiten von {file}: {e}")
 
     if not dataframes:
-        print("Keine Daten gefunden.")
+        print("Keine gültigen Daten vorhanden.")
         return None
-        
-        #else:
-        #    df = pd.concat(dataframes, ignore_index=True)
-            
-    #df = df.drop_duplicates()
 
-    
     return pd.concat(dataframes, ignore_index=True)
     
 
@@ -98,10 +107,7 @@ def data_import():
 def data_cleaning(df):
     """Bereinigung der Daten
     - nicht benötigte Spalten löschen
-    - Eine Stadt pro Land mit den meisten Messwerten 
-    - und die Liste als csv ins Datenverzeichnis speichern
     - Zusammenfassung der Daten nach Datum, Land, Stadt und Spezies, so dass nur ein Messwert je Species (Median) pro Tag/ Stadt verbleibt
-    - filtern des df nach den ausgewählten Städten
     - Spalte Species aufteilen
     - df als csv speichern im Datenverzeichnis
     """
@@ -109,22 +115,16 @@ def data_cleaning(df):
 
     df = df.drop(columns=['variance', 'min', 'max'], errors='ignore')
 
-    # city_counts = df.groupby(["Country", "City"]).size().reset_index(name="count")
-    # cities = city_counts.loc[city_counts.groupby("Country")["count"].idxmax()]
-  
-    # output_path = './data/city_per_country.csv'
-    # os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    # cities.to_csv(output_path, index=False)
-    # print(f"✅ Datei wurde gespeichert: {output_path}")
-    
-    # cities=cities['City'].tolist()
-    # df = df[df['City'].isin(cities)]
-
     df = df.groupby(["Date", "Country", "City", "Specie"], as_index=False).agg({"median": "mean"})  
 
     df = df.pivot(index=["Date", "Country", "City"], columns="Specie", values='median').reset_index()
 
-    df=add_geodata(df)
+    df["City"] = df["City"].str.lower().str.strip()
+    df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d')
+
+    df = geo_data(df)
+
+    df = weather_data(df)
 
     output_path = './data/cleaned_data.csv'
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -133,38 +133,113 @@ def data_cleaning(df):
 
     return df
 
-def add_geodata(df):
+def geo_data(df):
     """
     Fügt die Geodaten zu den Städten hinzu
     """
     df = df.copy()
 
-    # JSON-Datei laden
-    with open('./data/airquality-covid19-cities.json', 'r', encoding='utf-8') as file:
-        geodata = json.load(file)
-    
-    geodata = geodata["data"] 
+    # JSON-Datei laden mit Fehlerbehandlung
+    try:
+        with open('./data/airquality-covid19-cities.json', 'r', encoding='utf-8') as file:
+            geodata = json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Fehler beim Laden der JSON-Datei: {e}")
+        return df
+
+    geodata = geodata.get("data", [])
 
     # Erstellen eines DataFrames mit Städten und Geokoordinaten
     df_places = pd.DataFrame([
         {
-            "City": entry["Place"]["name"],  # Stadtname
-            "Latitude": entry["Place"]["geo"][0],  
-            "Longitude": entry["Place"]["geo"][1]
+            "City": entry.get("Place", {}).get("name"),
+            "Latitude": entry.get("Place", {}).get("geo", [None, None])[0],
+            "Longitude": entry.get("Place", {}).get("geo", [None, None])[1]
         }
-        for entry in geodata if "Place" in entry])  # Nur Einträge mit "Place" verwenden
-    
+        for entry in geodata if "Place" in entry and "geo" in entry.get("Place", {})
+    ])
 
-    # Standardisiere den Stadtnamen für eine bessere Übereinstimmung
-    df["City"] = df["City"].str.lower().str.strip()
+    # Entferne Zeilen mit fehlenden Stadtnamen
+    df_places.dropna(subset=["City"], inplace=True)
+
+    # Standardisiere Stadtnamen
     df_places["City"] = df_places["City"].str.lower().str.strip()
+    df["City"] = df["City"].str.lower().str.strip()
 
     # Zusammenführen der beiden DataFrames über "City"
     df = df.merge(df_places, on="City", how="left")
 
+    # Überprüfung auf fehlende Geodaten
+    fehlende_staedte = df[df["Latitude"].isna()]["City"].unique()
+    if fehlende_staedte.size > 0:
+        print(f"Keine Geodaten gefunden für: {', '.join(fehlende_staedte)}")
+
     return df
 
-#data_import()
-#data_cleaning()
-#download_files(files, output_folder)
+def weather_data(df):
+    """
+    Ruft Wetterdaten für Städte im DataFrame ab und integriert sie.
+    """
+    df = df.copy()
+
+    # Städte extrahieren und Duplikate entfernen
+    cities = df[['City', 'Latitude', 'Longitude']].drop_duplicates()
+
+    # Zeitspanne festlegen
+    start = datetime(2015, 1, 1)
+    end = datetime(2024, 12, 31)
+
+    # DataFrame für alle Städte vorbereiten
+    all_data = pd.DataFrame()
+
+    # Wetterdaten für jede Stadt abrufen und hinzufügen
+    for _, city in cities.iterrows():
+        try:
+            # Nächste Wetterstation suchen
+            stations = Stations().nearby(city['Latitude'], city['Longitude'])
+            station = stations.fetch(1)
+
+            if not station.empty:
+                station_id = station.index[0]
+
+                # Tägliche Wetterdaten abrufen
+                data = Daily(station_id, start, end).fetch()
+
+                # NaN-Daten rausfiltern
+                data.dropna(how='all', inplace=True)
+
+                if not data.empty:
+                    # Stadtname hinzufügen
+                    data["City"] = city["City"]
+
+                    # Daten in den Gesamtdaten-Frame einfügen
+                    all_data = pd.concat([all_data, data])
+
+        except Exception as e:
+            print(f"⚠️ Fehler beim Abrufen der Daten für {city['City']}: {e}")
+
+    # Index zurücksetzen
+    all_data.reset_index(inplace=True)
+
+    # Spalte 'time' umbenennen in 'Date'
+    all_data.rename(columns={'time': 'Date'}, inplace=True)
+
+    # Standardisiere den Stadtnamen
+    all_data["City"] = all_data["City"].str.lower().str.strip()
+
+    print(f"✅ Wetterdaten gesammelt für {all_data['City'].nunique()} Städte")
+
+    # Konvertiere die 'Date'-Spalte in beiden DataFrames zu String-Format
+    # df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d')
+    all_data['Date'] = pd.to_datetime(all_data['Date']).dt.strftime('%Y-%m-%d')
+
+    # Berechne den Anteil der NaN-Werte pro Spalte
+    missing_percentage = all_data.isna().mean() * 100
+    # Lösche Spalten mit mehr als 80% NaN-Werten
+    all_data = all_data.loc[:, missing_percentage <= 80]
+
+    # Zusammenführen der beiden DataFrames über "City" und "Date"
+    df = pd.merge(df, all_data, on=["City", 'Date'], how="left")
+
+    return df
 
