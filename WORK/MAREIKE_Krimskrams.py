@@ -11,7 +11,7 @@ def data_import():
     Entfernen von Kommentaren, Duplikaten und Umbenennung bestimmter Spaltenwerte.
     Zusammenführung der DataFrames.
     """
-    data_folder = './data/'
+    data_folder = '../data/'
     all_files = [f for f in os.listdir(data_folder) if f.startswith('waqi-covid-') and f.endswith('.csv') or f == 'airquality-covid19-cities.json']
     dataframes = []
 
@@ -69,7 +69,7 @@ def data_cleaning(df):
 
     df = geo_data(df)
 
-    output_path = './data/cleaned_data.csv'
+    output_path = '../data/cleaned_data.csv'
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     df.to_csv(output_path, index=False)
     print(f"✅ Datei wurde gespeichert: {output_path}")
