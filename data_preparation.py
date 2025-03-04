@@ -52,8 +52,8 @@ files = {
     "waqi-covid-2023Q2.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2023Q2",
     "waqi-covid-2023Q3.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2023Q3",
     "waqi-covid-2023Q4.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2023Q4",
-    "airquality-covid19-cities.json": "https://aqicn.org/data-platform/covid19/airquality-covid19-cities.json"
-}
+    "airquality-covid19-cities.json": "https://aqicn.org/data-platform/covid19/airquality-covid19-cities.json",
+    "population.csv": "https://datahub.io/core/population-city/r/unsd-citypopulation-year-both.csv"}
 output_folder = "data"
 
 
@@ -125,6 +125,7 @@ def data_cleaning(df):
     df = geo_data(df)
 
     df = weather_data(df)
+
 
     output_path = './data/cleaned_data.csv'
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
