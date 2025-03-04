@@ -3,11 +3,14 @@ import pandas as pd
 import json
 import requests
 
-def download_files(file_info, output_folder):
+def download_files(files, output_folder):
+    """lädt die benötigten Dateien herunter und 
+    speichert sie im angegebenen Verzeichnis"""
+    
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    for filename, url in file_info.items():
+    for filename, url in files.items():
         output_path = os.path.join(output_folder, filename)
 
         try:
@@ -20,9 +23,8 @@ def download_files(file_info, output_folder):
                 print(f"Failed to download {filename}: HTTP {response.status_code}")
         except Exception as e:
             print(f"Error downloading {filename}: {e}")
-
 # Nutzung
-file_info = {
+files = {
     "waqi-covid-2025.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2025",
     "waqi-covid-2015H1.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2015H1",
     "waqi-covid-2016H1.csv": "https://aqicn.org/data-platform/covid19/report/45108-d76dd600/2016H1",
@@ -52,7 +54,7 @@ file_info = {
 }
 output_folder = "data"
 
-download_files(file_info, output_folder)
+
 
 
 
@@ -108,20 +110,22 @@ def data_cleaning(df):
 
     df = df.drop(columns=['variance', 'min', 'max'], errors='ignore')
 
-    city_counts = df.groupby(["Country", "City"]).size().reset_index(name="count")
-    cities = city_counts.loc[city_counts.groupby("Country")["count"].idxmax()]
+    # city_counts = df.groupby(["Country", "City"]).size().reset_index(name="count")
+    # cities = city_counts.loc[city_counts.groupby("Country")["count"].idxmax()]
   
-    output_path = './data/city_per_country.csv'
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    cities.to_csv(output_path, index=False)
-    print(f"✅ Datei wurde gespeichert: {output_path}")
+    # output_path = './data/city_per_country.csv'
+    # os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    # cities.to_csv(output_path, index=False)
+    # print(f"✅ Datei wurde gespeichert: {output_path}")
     
-    cities=cities['City'].tolist()
-    df = df[df['City'].isin(cities)]
+    # cities=cities['City'].tolist()
+    # df = df[df['City'].isin(cities)]
 
     df = df.groupby(["Date", "Country", "City", "Specie"], as_index=False).agg({"median": "mean"})  
 
     df = df.pivot(index=["Date", "Country", "City"], columns="Specie", values='median').reset_index()
+
+    df=add_geodata(df)
 
     output_path = './data/cleaned_data.csv'
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -163,4 +167,5 @@ def add_geodata(df):
 
 #data_import()
 #data_cleaning()
+#download_files(files, output_folder)
 

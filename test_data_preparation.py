@@ -20,13 +20,13 @@ def test_download_files(mock_exists, mock_makedirs, mock_open, mock_get):
     }
     output_folder = "test_data"
 
-    download_files(file_info, output_folder)
+    download_files(files, output_folder)
 
     assert mock_makedirs.called
-    assert mock_get.call_count == len(file_info)
-    assert mock_open.call_count == len(file_info)
+    assert mock_get.call_count == len(files)
+    assert mock_open.call_count == len(files)
 
-    for filename in file_info:
+    for filename in files:
         mock_open.assert_any_call(os.path.join(output_folder, filename), 'wb')
 
 if __name__ == '__main__':
