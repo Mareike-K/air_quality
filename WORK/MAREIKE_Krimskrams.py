@@ -84,7 +84,7 @@ def geo_data(df):
 
     # JSON-Datei laden mit Fehlerbehandlung
     try:
-        with open('./data/airquality-covid19-cities.json', 'r', encoding='utf-8') as file:
+        with open('../data/airquality-covid19-cities.json', 'r', encoding='utf-8') as file:
             geodata = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError) as e:
         print(f"Fehler beim Laden der JSON-Datei: {e}")
