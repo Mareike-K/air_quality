@@ -58,7 +58,6 @@ output_folder = "data"
 
 
 
-
 def data_import():
     """
     Import der Daten aus allen Dateien, die mit 'waqi-covid-' anfangen.
