@@ -81,10 +81,17 @@ Für dieses Projekt wird Python und der Paketmanager uv benötigt.
 Alle weiteren Abhängigkeiten sind in der `pyproject.toml` Datei bzw. in der `uv.lock` dokumentiert.
 
 
-## Datenquelle
+## Datenquellen
 
 - [Air Quality Historical Data Platform: Institution & University Registration](https://aqicn.org/data-platform/covid19/)
 - *TBD* https://aqicn.org/api/de/
+
+## SSL-Zertifikate für Wetterdaten (Mac)
+Wenn SSL-Zertifikate nicht verifiziert werden können, müssen u.U. die Zertifikate erneuert werden. Wenn übliche Methoden nicht funktionieren:
+Versteckte Dateien anzeigen lassen.
+Projektordner > .venv > bin > Suche: "Install Certificates.command" > Doppelklick
+(s. StackOverflow: https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org)
+
 
 ## Explorative Datenanalyse (EDA)
 
