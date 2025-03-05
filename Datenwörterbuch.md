@@ -13,30 +13,49 @@
 | variance  |   Varianz | Quadrierte Abweichung vom Median                                  |
 
 # Messwerte (Arten)
-| Name          | Bedeutung                                 | Beschreibung                                           |
-|-----------    |-------------------------------------------|--------------------------------------------------------|
-| aqi           | Air Quality Index                         |
-| co            | Kohlenmonoxid                             |
-| dew           | Tau                                       |
-| humidity      | Luftfeuchtigkeit                          |
-| mepaqi        | Ministry of Environment Protection AQI    |
-| neph          | Nephelometer-Messungen                    | Lichtstreuung an Aerosolpartikeln
-| no2           | Stickstoffdioxid                          |
-| o3            | Ozon                                      |
-| pm1           | particulate matter 1                      | Partikel die kleiner als 1 Mikrometer sind
-| pm10          | particulate matter 10                     | Partikel, die kleiner als 10 Mikrometer sind
-| pm25          | particulate matter 2,5                    | Partikel, die kleiner als 2,5 Mikrometer sind
+
+| Name           | Bedeutung                                 | Beschreibung                                           |
+|-----------     |-------------------------------------------|--------------------------------------------------------|
+| aqi            | Air Quality Index                         |      
+| co             | Kohlenmonoxid                             |
+| dew            | Tau                                       |
+| humidity       | Luftfeuchtigkeit                          |
+| mepaqi         | Ministry of Environment Protection AQI    |
+| neph           | Nephelometer-Messungen                    | Lichtstreuung an Aerosolpartikeln
+| no2            | Stickstoffdioxid                          |
+| o3             | Ozon                                      |
+| pm1            | particulate matter 1                      | Partikel die kleiner als 1 Mikrometer sind
+| pm10           | particulate matter 10                     | Partikel, die kleiner als 10 Mikrometer sind
+| pm25           | particulate matter 2,5                    | Partikel, die kleiner als 2,5 Mikrometer sind
 | precipitation* | Niederschlag                              |
 | pressure*      | Luftdruck                                 |
-| so2           | Schwefeldioxid                            |
+| so2            | Schwefeldioxid                            |
 | temperature*   | Temperatur                                |
 | uvi*           | UV-Index                                  |
 | wd*            | Wind Direction                            | Windrichtung
 | wind-gust*     |                                           | Windböen
 | wind-speed*    |                                           | Windstärke
- |* Werden durch Daten der Wetterstationen ersetzt.
+|* Werden durch Meteostat ersetzt.
+
+# Meteostat-Daten 
+(https://dev.meteostat.net/python/daily.html#data-structure):
+| Name           | Bedeutung                                 | Beschreibung                                           |
+|-----------     |-------------------------------------------|--------------------------------------------------------|
+| Tavg           | Average Temperature                       | Durchschnittstemperatur in °C
+| Tmin           | Minimum Temperature                       | Tiefsttemperatur in °C
+| Tmax           | Maximum Temperature                       | Höchsttemperatur in °C
+| Prcp           | Precipitation                             | Niederschlag mm
+| Wdir           | Wind Direction                            | Windrichtung in °
+| Wsp            | Wind Speed                                | Windstärke in km/h
+| Pres           | Pressure                                  | Luftdruck in hPa
+
+
+
+
+
 
 # Länderkürzel (nach ISO-3166-2)
+
 |    |  Land                            |  |    |   Land                           |--|    |    Land                          |
 |----|----------------------------------|--|----|----------------------------------|--|----|----------------------------------|
 | AE |  Vereinigte Arabische Emirate    |  | AR |  Argentinien                     |  | AT |  Österreich                      |
@@ -70,5 +89,9 @@
 | UG |  Uganda                          |  | US |  Vereinigte Staaten              |  | UZ |  Usbekistan                      |
 | VN |  Vietnam                         |  | XK |  Kosovo                          |  | ZA |  Südafrika                       |
 
-# Detaillierte Infos zum AQI
+# Detaillierte Infos zum AQI:
 https://document.airnow.gov/technical-assistance-document-for-the-reporting-of-daily-air-quailty.pdf
+
+
+# Bevölkerungsdaten: 
+https://datahub.io/core/population-city#unsd-citypopulation-year-both
