@@ -56,10 +56,6 @@ files = {
     "population.csv": "https://datahub.io/core/population-city/r/unsd-citypopulation-year-both.csv"}
 output_folder = "data"
 
-
-
-
-
 def data_import():
     """
     Import der Daten aus allen Dateien, die mit 'waqi-covid-' anfangen.
@@ -100,9 +96,6 @@ def data_import():
         return None
 
     return pd.concat(dataframes, ignore_index=True)
-    
-
-
 
 def data_cleaning(df):
     """Bereinigung der Daten
@@ -126,6 +119,21 @@ def data_cleaning(df):
 
     df = weather_data(df)
 
+    df = convert_date(df)
+
+    df['City'] = df['City'].str.capitalize()
+
+    df = population_data(df)
+
+    df = df[['Year', 'Month', 'Day', 'Country', 'City', 'Latitude', 'Longitude', 'Population', 'Co', 'No2', 'O3', 'Pm10', 'Pm25',
+       'Pressure', 'So2', 'Temperature', 'Wind-gust', 'Wind-speed', 'Dew', 'Humidity', 'Tavg', 'Tmin', 'Tmax', 'Prcp', 'Wdir', 'Wspd', 'Pres',
+        ]]
+
+    #Redundante Wetter-Spalten löschen
+    df = df.drop(columns=[['Precipitation', 'Pressure', 'Temperature', 'Uvi', 'Wd', 'Wind-gust', 'Wind-speed']], errors='ignore')
+    
+    #Spalten mit mehr als 90% NaNs löschen
+    df = df.loc[:, df.isnull().mean() < 0.9]
 
     output_path = './data/cleaned_data.csv'
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -244,3 +252,52 @@ def weather_data(df):
 
     return df
 
+def population_data(df):
+    '''
+    Fügt dem jeder Stadt Einwohner hinzu
+    '''
+    df = df.copy()
+    
+    df_population = pd.read_csv(
+                    './data/population.csv',
+                    sep=',', 
+                    header=0,
+                    engine='python',  # Hilft oft bei Parsing-Problemen
+                    on_bad_lines='skip',  # Methode zum Überspringen von fehlerhaften Zeilen
+                    encoding='utf-8')  # Falls Sonderzeichen vorhanden sind
+
+    df_population = df_population[['City', 'Value', 'Year']]
+
+    df_population.rename(columns={'Value': 'Population'}, inplace=True)
+
+    df_population.dropna(inplace=True)
+    df_population['Population'] = df_population['Population'].astype(int)
+
+    # Merge der beiden DataFrames basierend auf der "City"-Spalte
+    df.columns = df.columns.str.capitalize()
+    df['Year'] = df['Year'].astype(int)
+    df_population['Year'] = df_population['Year'].astype(int)
+    df = pd.merge(df, df_population, on=['City', 'Year'], how='left')
+    
+
+    output_path = './data/population_data.csv'
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    df_population.to_csv(output_path, index=False)
+    print(f"✅ Datei wurde gespeichert: {output_path}")
+
+    return(df)
+
+def convert_date(df):
+    # Convert 'Date' column to datetime
+    df['Date'] = pd.to_datetime(df['Date'])
+
+    # Split 'Date' column into 'year', 'month' and 'day'
+    df['year'] = df['Date'].dt.year
+    df['month'] = df['Date'].dt.month
+    df['day'] = df['Date'].dt.day
+
+    # Remove 'Date' column
+    if 'Date' in df.columns:
+        df.drop(columns=['Date'], inplace=True)
+    
+    return (df)

@@ -26,15 +26,15 @@
 | pm1           | particulate matter 1                      | Partikel die kleiner als 1 Mikrometer sind
 | pm10          | particulate matter 10                     | Partikel, die kleiner als 10 Mikrometer sind
 | pm25          | particulate matter 2,5                    | Partikel, die kleiner als 2,5 Mikrometer sind
-| precipitation | Niederschlag                              |
-| pressure      | Luftdruck                                 |
+| precipitation* | Niederschlag                              |
+| pressure*      | Luftdruck                                 |
 | so2           | Schwefeldioxid                            |
-| temperature   | Temperatur                                |
-| uvi           | UV-Index                                  |
-| wd            | Wind Direction                            | Windrichtung
-| wind-gust     |                                           | Windböen
-| wind-speed    |                                           | Windstärke
-
+| temperature*   | Temperatur                                |
+| uvi*           | UV-Index                                  |
+| wd*            | Wind Direction                            | Windrichtung
+| wind-gust*     |                                           | Windböen
+| wind-speed*    |                                           | Windstärke
+ |* Werden durch Daten der Wetterstationen ersetzt.
 
 # Länderkürzel (nach ISO-3166-2)
 |    |  Land                            |  |    |   Land                           |--|    |    Land                          |
