@@ -130,7 +130,8 @@ def data_cleaning(df):
         ]]
 
     #Redundante Wetter-Spalten löschen
-    df = df.drop(columns=[['Precipitation', 'Pressure', 'Temperature', 'Uvi', 'Wd', 'Wind-gust', 'Wind-speed']], errors='ignore')
+    df = df.drop(columns=[['Precipitation', 'Pressure', 'Uvi', 'Wd']], errors='ignore')
+    df = df.drop(columns=[['Temperature', 'Wind-gust', 'Wind-speed']], errors='ignore')
     
     #Spalten mit mehr als 90% NaNs löschen
     df = df.loc[:, df.isnull().mean() < 0.9]
