@@ -106,7 +106,9 @@ Projektordner > .venv > bin > Suche: "Install Certificates.command" > Doppelklic
 - **`BaseModel.ipynb`**: Demonstriert die Verwendung der Pipeline zur Erstellung eines Basis-Modells.
 - **`PCA_pretest.ipynb`**: Führt eine Hauptkomponentenanalyse durch, um die Dimensionalität der Daten zu reduzieren.
 
+## Hyperparameter-Optimierung
 
+- **`Test_HyperparameterOptimization.ipynb`**: Zeigt, wie man mit Optuna eine Hyperparameter-Optimierung durchführt, um die Modellleistung zu verbessern.
 
 ## Testen
 
@@ -132,9 +134,20 @@ Projektordner > .venv > bin > Suche: "Install Certificates.command" > Doppelklic
 - **Matplotlib & Seaborn**: Datenvisualisierung.
 - **Scikit-Learn**: Maschinelles Lernen.
 - **Statsmodels**: Statistische Modellierung.
-
+- **kagglehub**: Vereinfachtes Herunterladen von Kaggle-Datensätzen.
 - **tqdm**: Fortschrittsbalken für Schleifen.
-
+- **Optuna**: Hyperparameter-Optimierung.
 - **Plotly**: Interaktive Visualisierungen.
 - **pytest**: Framework zum Testen von Python-Code.
 
+## Anleitung für Teilnehmende
+
+- **Anpassung des Projekts**: Nutzen Sie dieses Projekt als Vorlage und passen Sie es an Ihre eigenen Anforderungen an.
+- **Erweiterung der Analyse**: Fügen Sie weitere Analyseschritte oder Visualisierungen hinzu.
+- **Modellierung**: Entwickeln Sie eigene Modelle und experimentieren Sie mit verschiedenen Algorithmen.
+- **Hyperparameter-Optimierung**: Nutzen Sie Optuna, um die Hyperparameter Ihrer Modelle zu optimieren.
+- **Modularisierung**: Lagern Sie wiederverwendbaren Code in Module wie `pipelines.py` aus.
+- **Testen**: Schreiben Sie Tests für Ihre Funktionen, um die Zuverlässigkeit Ihres Codes sicherzustellen.
+- **Dokumentation**: Kommentieren Sie Ihren Code und dokumentieren Sie Ihre Ergebnisse ausführlich.
+
+Wir wünschen Ihnen viel Erfolg und Freude bei Ihrem Projekt!
