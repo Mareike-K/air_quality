@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import json
 import sys
+import meteostat
 sys.path.append('.')
 from datetime import datetime
 from unittest.mock import patch, mock_open
@@ -10,6 +11,7 @@ from data_preparation import download_files, data_import, data_cleaning, geo_dat
 
 @patch('requests.get')
 @patch('os.makedirs')
+@patch('os.path.exists', return_value=False)
 @patch('builtins.open', new_callable=mock_open)
 def test_download_files(mock_open, mock_makedirs, mock_get):
     files = {
@@ -163,8 +165,8 @@ def test_geo_data_missing_geo_fields(mock_file):
     assert result['Latitude'].isna().all()
     assert result['Longitude'].isna().all()
 
-@patch('your_module.Stations')
-@patch('your_module.Daily')
+@patch('meteostat.Stations')
+@patch('meteostat.Daily')
 def test_weather_data(mock_daily, mock_stations):
     mock_stations().nearby().fetch.return_value = pd.DataFrame({'index': ['12345']})
     mock_daily().fetch.return_value = pd.DataFrame({
@@ -214,10 +216,10 @@ def test_convert_date():
     assert result.loc[0, 'month'] == 3
     assert result.loc[0, 'day'] == 5
 
-@patch('your_module.geo_data', side_effect=lambda x: x)
-@patch('your_module.weather_data', side_effect=lambda x: x)
-@patch('your_module.convert_date', side_effect=lambda x: x)
-@patch('your_module.population_data', side_effect=lambda x: x)
+@patch('data_preparation.geo_data', side_effect=lambda x: x)
+@patch('data_preparation.weather_data', side_effect=lambda x: x)
+@patch('data_preparation.convert_date', side_effect=lambda x: x)
+@patch('data_preparation.population_data', side_effect=lambda x: x)
 @patch('os.makedirs')
 @patch('pandas.DataFrame.to_csv')
 def test_data_cleaning(mock_to_csv, mock_makedirs, mock_population, mock_convert, mock_weather, mock_geo):
@@ -245,19 +247,19 @@ def test_data_cleaning(mock_to_csv, mock_makedirs, mock_population, mock_convert
     mock_makedirs.assert_called_once()
     mock_to_csv.assert_called_once_with('./data/cleaned_data.csv', index=False)
 
-@patch('your_module.geo_data', side_effect=lambda x: x)
-@patch('your_module.weather_data', side_effect=lambda x: x)
-@patch('your_module.convert_date', side_effect=lambda x: x)
-@patch('your_module.population_data', side_effect=lambda x: x)
+@patch('data_preparation.geo_data', side_effect=lambda x: x)
+@patch('data_preparation.weather_data', side_effect=lambda x: x)
+@patch('data_preparation.convert_date', side_effect=lambda x: x)
+@patch('data_preparation.population_data', side_effect=lambda x: x)
 def test_data_cleaning_empty_df(mock_population, mock_convert, mock_weather, mock_geo):
     test_data = pd.DataFrame(columns=['Date', 'Country', 'City', 'Specie', 'median'])
     result = data_cleaning(test_data)
     assert result.empty
 
-@patch('your_module.geo_data', side_effect=lambda x: x)
-@patch('your_module.weather_data', side_effect=lambda x: x)
-@patch('your_module.convert_date', side_effect=lambda x: x)
-@patch('your_module.population_data', side_effect=lambda x: x)
+@patch('data_preparation.geo_data', side_effect=lambda x: x)
+@patch('data_preparation.weather_data', side_effect=lambda x: x)
+@patch('data_preparation.convert_date', side_effect=lambda x: x)
+@patch('data_preparation.population_data', side_effect=lambda x: x)
 @patch('os.makedirs')
 @patch('pandas.DataFrame.to_csv')
 def test_data_cleaning_missing_columns(mock_to_csv, mock_makedirs, mock_population, mock_convert, mock_weather, mock_geo):
