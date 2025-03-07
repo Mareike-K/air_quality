@@ -1,6 +1,8 @@
 # Air Quality by Mareike and Wiebke
 
-vorbemerkungstext
+Dieses Projekt entstand im Rahmen des Kurses 'PortfolioProjekte' bei stackfuel.
+Unser Ziel war es, die in den vorangegangenen Monaten erlernten Fähigkeiten zu festigen und zu erweitern.
+Wir haben uns ganz bewusst entschieden, mit sehr rohen Daten zu arbeiten und keinen 'fertigen' Datensatz zu nutzen. Wohl wissend, dass dabei der DataScience-Bereich etwas kürzer kommen könnte.
 
 ## Inhaltsverzeichnis
 
@@ -9,12 +11,9 @@ vorbemerkungstext
 - [Voraussetzungen](#voraussetzungen)
 - [Installation](#installation)
 - [Daten herunterladen](#daten-herunterladen)
-- [Explorative Datenanalyse (EDA)](#explorative-datenanalyse-eda)
-- [Modellierung und Pipeline](#modellierung-und-pipeline)
-- [Hyperparameter-Optimierung](#hyperparameter-optimierung)
+- [Explorative Datenanalyse (EDA)](#EDA)
 - [Testen](#testen)
-- [Verwendete Technologien und Bibliotheken](#verwendete-technologien-und-bibliotheken)
-- [Anleitung für Teilnehmende](#anleitung-für-teilnehmende)
+- [Verwendete Technologien und Bibliotheken](#Glossar)
 - [Kontakt](#kontakt)
 
 ---
@@ -24,8 +23,8 @@ vorbemerkungstext
 Lernziel: erlerntes Wissen festigen, Umgang mit API-Daten, Deskriptive Analyse und Vorhersagen
 Analyseziel: 
 Einfluss von Wetterdaten auf die Schadstoffbelastung der Luft
-in fünf ausgewählten Städten (eine pro Kontinent)
-im Zeitraum 2019 bis 2024.
+in Städten (weltweit)
+im Zeitraum 2015 bis 2024.
 
 <i> 
 ggf Unterziel:
@@ -36,43 +35,44 @@ Hat HomeOffice/ Pandemie einen Einfluss auf die Feinstaubbelastung?
 </i>
 
 
-## Projektstruktur (UPDATEN)
+## Projektstruktur
 
 Die Projektstruktur ist wie folgt organisiert:
 
 ```
-StackFuel_Referenzprojekt/
+AIR_QUALITY/
 ├── .venv/
-├── .vscode/
 ├── data/
+├── Images
+├── Präsentationen
 ├── .gitignore
 ├── .python-version
-├── BaseModel.ipynb
-├── Download_kagglehub.py
-├── EDA_flight_prices.ipynb
-├── PCA_pretest.ipynb
-├── pipelines.py
+├── Clusteranalyse_big.ipynb 
+├── data_preparation.py
+├── data_HowTo.ipynb
+├── EDA.ipynb 
+├── Glossar.md
+├── main.py
 ├── pyproject.toml
 ├── README.md
-├── Test_HyperparameterOptimization.ipynb
-├── test_pipelines.py
+├── test_data_preparations.py
 └── uv.lock
 ```
 
 - **`.venv/`**: Virtuelle Python-Umgebung für das Projekt.
-- **`.vscode/`**: Einstellungen von Visual Studio Code für das Projekt.
 - **`data/`**: Ordner für die heruntergeladenen Datensätze.
+- **`Images/`**: Ordner für Bilder
 - **`.gitignore`**: Definiert, welche Dateien von der Versionskontrolle ausgeschlossen werden.
-- **`.python-version`**: Spezifiziert die Python-Version (>=3.13).
-- **`BaseModel.ipynb`**: Notebook zur Implementierung eines Basis-Modells mit Verwendung der Pipeline.
-- **`Download_kagglehub.py`**: Skript zum Herunterladen der Datensätze von Kaggle.
-- **`EDA_flight_prices.ipynb`**: Jupyter Notebook für die explorative Datenanalyse.
-- **`PCA_pretest.ipynb`**: Notebook zur Voruntersuchung mittels Hauptkomponentenanalyse.
-- **`pipelines.py`**: Enthält eine Beispiel-Pipeline für die Datenvorverarbeitung inklusive Column Transformer.
+- **`.python-version`**: Spezifiziert die Python-Version (>=3.11).
+- **`Clusteranalyse_big.ipynb`**: Notebook für die Clusteranalysen.
+- **`data_preparation.py`**: Skript zum Herunterladen, Importieren und Cleanen der Datensätze.
+- **`data_HowTo.ipynb`**: Jupyter Notebook mit ANleitung für manuellen Datandownload und Angaben über Datenquellen.
+- **`EDA.ipynb`**: Notebook für die Explorative DatenAnalyse.
+- **`Glossar.md`**: Enthält das Datenwörterbuch und Quellen.
+- **`Main.py`**: Relevant um Projekt außerhalb von VSCode zu starten.
 - **`pyproject.toml`**: Projektkonfigurationsdatei mit Abhängigkeiten.
 - **`README.md`**: Diese Dokumentation.
-- **`Test_HyperparameterOptimization.ipynb`**: Notebook zur Demonstration der Hyperparameter-Optimierung mit Optuna.
-- **`test_pipelines.py`**: Testskript für die Pipeline-Funktionen unter Verwendung von pytest.
+- **`test_data_preparation.py`**: Testskript für die data_preparation-Funktionen unter Verwendung von pytest.
 - **`uv.lock`**: Lock-Datei für den Paketmanager uv.
 
 ## Voraussetzungen
@@ -98,14 +98,7 @@ Projektordner > .venv > bin > Suche: "Install Certificates.command" > Doppelklic
 
 ## Explorative Datenanalyse (EDA)
 
-- 
-
-## Modellierung und Pipeline
-
-- **`pipelines.py`**: Enthält eine beispielhafte Preprocessing-Pipeline inklusive Column Transformer.
-- **`BaseModel.ipynb`**: Demonstriert die Verwendung der Pipeline zur Erstellung eines Basis-Modells.
-- **`PCA_pretest.ipynb`**: Führt eine Hauptkomponentenanalyse durch, um die Dimensionalität der Daten zu reduzieren.
-
+Siehe EDA.ipynb und Clusteranalyse_big.ipynb
 
 
 ## Testen
@@ -124,7 +117,7 @@ Projektordner > .venv > bin > Suche: "Install Certificates.command" > Doppelklic
 
 ## Verwendete Technologien und Bibliotheken
 
-- **Python 3.13**: Programmiersprache.
+- **Python 3.11**: Programmiersprache.
 - **uv**: Paketmanager für Python.
 - **Jupyter Notebook**: Interaktive Entwicklungsumgebung.
 - **Pandas**: Datenanalyse und -manipulation.
@@ -132,9 +125,13 @@ Projektordner > .venv > bin > Suche: "Install Certificates.command" > Doppelklic
 - **Matplotlib & Seaborn**: Datenvisualisierung.
 - **Scikit-Learn**: Maschinelles Lernen.
 - **Statsmodels**: Statistische Modellierung.
-
-- **tqdm**: Fortschrittsbalken für Schleifen.
-
+- **meteostats**: Klimadaten für Städte
+- **geopandas**: Koordinaten zum plotten von Karten.
 - **Plotly**: Interaktive Visualisierungen.
 - **pytest**: Framework zum Testen von Python-Code.
 
+## Kontakt
+
+Mareike Keller https://github.com/Mareike-K
+
+Wiebke Sir https://github.com/whypkey
