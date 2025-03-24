@@ -21,6 +21,7 @@ dependencies = [
     { name = "scikit-learn" },
     { name = "seaborn" },
     { name = "statsmodels" },
+    { name = "windrose" },
 ]
 
 [package.metadata]
@@ -35,6 +36,7 @@ requires-dist = [
     { name = "scikit-learn", specifier = ">=1.6.1" },
     { name = "seaborn", specifier = ">=0.13.2" },
     { name = "statsmodels", specifier = ">=0.14.4" },
+    { name = "windrose", specifier = ">=1.9.2" },
 ]
 
 [[package]]
@@ -2201,4 +2203,17 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/56/fc/238c424fd7f4ebb25f8b1da9a934a3ad7c848286732ae04263661eb0fc03/widgetsnbextension-4.0.13.tar.gz", hash = "sha256:ffcb67bc9febd10234a362795f643927f4e0c05d9342c727b65d2384f8feacb6", size = 1164730 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/21/02/88b65cc394961a60c43c70517066b6b679738caf78506a5da7b88ffcb643/widgetsnbextension-4.0.13-py3-none-any.whl", hash = "sha256:74b2692e8500525cc38c2b877236ba51d34541e6385eeed5aec15a70f88a6c71", size = 2335872 },
+]
+
+[[package]]
+name = "windrose"
+version = "1.9.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "matplotlib" },
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a5/9e/94a43a5bbbb59373e2f9c63a143cd89dafd5414c3658658f85809e7a1a83/windrose-1.9.2.tar.gz", hash = "sha256:70200afe01721bfe4a10ea26cbcc3e5c23800566921bbb8a34b0f68ade488bfa", size = 25327 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fb/5e/c27fbd92d635d5ee4789cb91b82e475a59a0dc86eb8a279e3397d4cc8d54/windrose-1.9.2-py3-none-any.whl", hash = "sha256:0f93d22233b281929dff9621366121622a02dd7b7f345e16a869e9947b9559fd", size = 20314 },
 ]
