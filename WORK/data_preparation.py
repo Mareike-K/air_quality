@@ -130,8 +130,8 @@ def data_cleaning(df):
         ]]
 
     #Redundante Wetter-Spalten löschen
-    df = df.drop(columns=['Precipitation', 'Pressure', 'Uvi', 'Wd'], errors='ignore')
-    df = df.drop(columns=['Temperature', 'Wind-gust', 'Wind-speed'], errors='ignore')
+    df = df.drop(columns=[['Precipitation', 'Pressure', 'Uvi', 'Wd']], errors='ignore')
+    df = df.drop(columns=[['Temperature', 'Wind-gust', 'Wind-speed']], errors='ignore')
     
     #Spalten mit mehr als 90% NaNs löschen
     df = df.loc[:, df.isnull().mean() < 0.9]
@@ -255,8 +255,7 @@ def weather_data(df):
 
 def population_data(df):
     '''
-    Fügt jeder Stadt Einwohner hinzu
-    Merge über Kalenderjahr
+    Fügt dem jeder Stadt Einwohner hinzu
     '''
     df = df.copy()
     
@@ -269,30 +268,25 @@ def population_data(df):
                     encoding='utf-8')  # Falls Sonderzeichen vorhanden sind
 
     df_population = df_population[['City', 'Value', 'Year']]
+
     df_population.rename(columns={'Value': 'Population'}, inplace=True)
+
     df_population.dropna(inplace=True)
     df_population['Population'] = df_population['Population'].astype(int)
 
-    # Spaltennamen anpassen
+    # Merge der beiden DataFrames basierend auf der "City"-Spalte
     df.columns = df.columns.str.capitalize()
     df['Year'] = df['Year'].astype(int)
     df_population['Year'] = df_population['Year'].astype(int)
+    df = pd.merge(df, df_population, on=['City', 'Year'], how='left')
+    
 
-    # **Sortieren nach "City" & "Year"**
-    df = df.sort_values(by=['City', 'Year']).reset_index(drop=True)
-    df_population = df_population.sort_values(by=['City', 'Year']).reset_index(drop=True)
-
-    # Merge mit dem nächstgelegenen Jahr
-    df = df.merge(df_population, on=['City', 'Year'], how='left')
-    df['Population'] = df.groupby('City')['Population'].fillna(method='ffill').fillna(method='bfill')
-
-    # Datei speichern
     output_path = './data/population_data.csv'
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    df.to_csv(output_path, index=False)
+    df_population.to_csv(output_path, index=False)
     print(f"✅ Datei wurde gespeichert: {output_path}")
 
-    return df
+    return(df)
 
 def convert_date(df):
     # Convert 'Date' column to datetime
