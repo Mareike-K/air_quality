@@ -130,8 +130,8 @@ def data_cleaning(df):
         ]]
 
     #Redundante Wetter-Spalten löschen
-    df = df.drop(columns=['Precipitation', 'Pressure', 'Uvi', 'Wd'], errors='ignore')
-    df = df.drop(columns=['Temperature', 'Wind-gust', 'Wind-speed'], errors='ignore')
+    df = df.drop(columns=['Precipitation', 'Pressure', 'Uvi', 'Wd'], errors='ignore')  #Datenspalten aus air_quality
+    df = df.drop(columns=['Temperature', 'Wind-gust', 'Wind-speed'], errors='ignore')  #Datenspalten aus Wetterdaten
     
     #Spalten mit mehr als 90% NaNs löschen
     df = df.loc[:, df.isnull().mean() < 0.9]
@@ -284,7 +284,7 @@ def population_data(df):
 
     # Merge mit dem nächstgelegenen Jahr
     df = df.merge(df_population, on=['City', 'Year'], how='left')
-    df['Population'] = df.groupby('City')['Population'].fillna(method='ffill').fillna(method='bfill')
+    df['Population'] = df.groupby('City')['Population'].fillna(method='ffill').fillna(method='bfill')   #soon to be deprecated
 
     # Datei speichern
     output_path = './data/population_data.csv'
