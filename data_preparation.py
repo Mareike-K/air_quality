@@ -303,8 +303,8 @@ def convert_date(df):
     df['month'] = df['Date'].dt.month
     df['day'] = df['Date'].dt.day
 
-    # Remove 'Date' column
-    if 'Date' in df.columns:
-        df.drop(columns=['Date'], inplace=True)
+    ## Remove 'Date' column
+    #if 'Date' in df.columns:
+    #    df.drop(columns=['Date'], inplace=True)
     
     return (df)
