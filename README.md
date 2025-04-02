@@ -95,10 +95,19 @@ Versteckte Dateien anzeigen lassen.
 Projektordner > .venv > bin > Suche: "Install Certificates.command" > Doppelklick
 (s. StackOverflow: https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org)
 
-
+## Analysen
 ## Explorative Datenanalyse (EDA)
-
-Siehe EDA.ipynb und Clusteranalyse_big.ipynb
+1_eda_exploration.ipynb: Überblick über den Datensatz und die Variablen; deskriptive Statistik und Ausreißerentfernung
+## Korrelationsanalysen
+2_eda_correlations.ipynb: Pearson-Matrix, Pairplots; Visuelle Analyse ausgewählter Variablenpaare
+## Feature Engineering
+Muss noch gemacht werden, wenn gewollt
+## Clusteranalyse
+4_clusteranalysis.ipynb: 
+## Klassifikationsmodelle
+5_classification.ipynb: Vorhersage gute vs schlechte Luft auf Grundlage von PM2.5-Wert; logistische Regression, Random Forest, Gradient Boosting
+## Zeitreihenanalyse
+6_time_series.ipynb: Entwicklung der Feinstaubwerte in Hamburg und München 2015-2024
 
 
 ## Testen
