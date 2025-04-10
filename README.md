@@ -100,8 +100,8 @@ Projektordner > .venv > bin > Suche: "Install Certificates.command" > Doppelklic
 1_eda_exploration.ipynb: Überblick über den Datensatz und die Variablen; deskriptive Statistik und Ausreißerentfernung
 ## Korrelationsanalysen
 2_eda_correlations.ipynb: Pearson-Matrix, Pairplots; Visuelle Analyse ausgewählter Variablenpaare
-## Feature Engineering
-Muss noch gemacht werden, wenn gewollt
+## Feature Engineering für lineare Regression: Luftqualität in Hamburg
+Dieses Notebook zeigt, wie sich ein einfaches Regressionsmodell durch gezieltes Feature Engineering deutlich verbessern lässt. Anhand von Wetter- und Luftschadstoffdaten aus Hamburg wird Schritt für Schritt demonstriert, wie sich durch Transformationen, zeitliche Kodierung und nichtlineare Erweiterungen die Vorhersagegüte steigern lässt – von einem anfänglichen $R^2% von 0.07 auf über 0.31.
 ## Clusteranalyse
 4_clusteranalysis.ipynb: 
 ## Klassifikationsmodelle
