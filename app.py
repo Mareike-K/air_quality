@@ -25,25 +25,131 @@ anzeige_namen = {
 }
 auswahl = st.selectbox("Wähle einen Schadstoff", schadstoffe)
 
-# Daten für beide Städte filtern
-df_a = df[df["City"] == stadt_a].copy()
-df_b = df[df["City"] == stadt_b].copy()
+# Grenzwert-Modus auswählen
+modus = st.radio(
+    "Wie sollen hohe Schadstoffwerte erkannt werden?",
+    ("Offizieller Grenzwert", "Statistisch (oberes Quartil)")
+)
+
+# Grenzwert festlegen
+if modus == "Offizieller Grenzwert":
+    if auswahl == "Pm25":
+        grenzwert = 25
+    elif auswahl == "No2":
+        grenzwert = 40
+    elif auswahl == "So2":
+        grenzwert = 20
+    elif auswahl == "O3":
+        grenzwert = 100
+    elif auswahl == "Co":
+        grenzwert = 5  # Beispielwert in mg/m³
+    else:
+        grenzwert = None
+else:
+    grenzwert = df[auswahl].quantile(0.75)
+
+st.caption(f"Verwendeter Grenzwert für {anzeige_namen[auswahl]}: {grenzwert:.2f}")
+
+# Farben definieren
+farbe_a = "#4c7195"     # Stadt A
+farbe_b = "#6ec9e0"     # Stadt B
+farbe_hoch_a = "#c62828"  # Hoher Wert A (Dunkelrot)
+farbe_hoch_b = "#ff4069"  # Hoher Wert B (Leuchtrot)
+
+# Monatliche Mittelwerte vorbereiten
+df["Jahr_Monat"] = df["Datum"].dt.to_period("M")
+df_grouped = df.groupby(["City", "Jahr_Monat"])[auswahl].mean().reset_index()
+df_grouped["Jahr_Monat"] = df_grouped["Jahr_Monat"].astype(str)
+df_grouped["Jahr_Monat"] = pd.to_datetime(df_grouped["Jahr_Monat"])
+
+# Daten filtern
+df_a = df_grouped[df_grouped["City"] == stadt_a]
+df_b = df_grouped[df_grouped["City"] == stadt_b]
+
+# Abschnittstrennung im Dashboard: Balkendiagramm
+st.markdown("## 🌍 Vergleich der Jahresmittelwerte")
+
+# Jahresmittelwerte berechnen
+df["Jahr"] = df["Datum"].dt.year
+jahresmittel = df.groupby(["City", "Jahr"])[auswahl].mean().reset_index()
+
+# Neuestes Jahr wählen (z. B. 2023, 2022 ...)
+letztes_jahr = jahresmittel["Jahr"].max()
+df_letztes_jahr = jahresmittel[jahresmittel["Jahr"] == letztes_jahr]
+
+# Balkendiagramm mit matplotlib
+fig_bar, ax_bar = plt.subplots()
+farben = {
+    "Delhi": "#ff4069",
+    "Tokyo": "#4c7195",
+    "Osaka": "#6ec9e0"
+}
+ax_bar.bar(
+    df_letztes_jahr["City"],
+    df_letztes_jahr[auswahl],
+    color=[farben[stadt] for stadt in df_letztes_jahr["City"]]
+)
+
+# Styling
+ax_bar.set_title(f"{anzeige_namen[auswahl]}-Jahresmittel {letztes_jahr}")
+ax_bar.set_ylabel(f"{anzeige_namen[auswahl]} (µg/m³)")
+ax_bar.set_xlabel("Stadt")
+ax_bar.grid(axis="y")
+
+# Balkendiagramm anzeigen
+st.pyplot(fig_bar)
+
+# Abschnittstrennung im Dashboard: Liniendiagramm
 
 # Plot erstellen
 fig, ax = plt.subplots()
 
-# Stadt A plotten
-ax.plot(df_a["Datum"], df_a[auswahl], label=stadt_a, marker='o')
+# Linien plotten
+# Linien plotten
+ax.plot(df_a["Jahr_Monat"], df_a[auswahl], label=stadt_a, marker='o', color=farbe_a)
+ax.plot(df_b["Jahr_Monat"], df_b[auswahl], label=stadt_b, marker='x', color=farbe_b)
 
-# Stadt B plotten
-ax.plot(df_b["Datum"], df_b[auswahl], label=stadt_b, marker='x')
+# Hohe Werte hervorheben
+hoch_a = df_a[df_a[auswahl] > grenzwert]
+hoch_b = df_b[df_b[auswahl] > grenzwert]
+
+ax.scatter(hoch_a["Jahr_Monat"], hoch_a[auswahl], color=farbe_hoch_a, s=50, label=f"hoch in {stadt_a}", zorder=5)
+ax.scatter(hoch_b["Jahr_Monat"], hoch_b[auswahl], color=farbe_hoch_b, s=50, label=f"hoch in {stadt_b}", zorder=5)
 
 # Styling
-ax.set_title(f"{anzeige_namen[auswahl]}-Werte in {stadt_a} vs. {stadt_b}")
-ax.set_xlabel("Datum")
-ax.set_ylabel(anzeige_namen[auswahl])
+ax.set_title(f"{anzeige_namen[auswahl]}-Monatsmittel in {stadt_a} vs. {stadt_b}")
+ax.set_xlabel("Monat")
+ax.set_ylabel(f"{anzeige_namen[auswahl]} (Monatsmittel)")
 ax.legend()
 ax.grid(True)
 
 # Plot anzeigen
 st.pyplot(fig)
+
+# Kennzahlen berechnen
+mean_a = df_a[auswahl].mean()
+min_a = df_a[auswahl].min()
+max_a = df_a[auswahl].max()
+count_a = df_a[auswahl].count()
+
+mean_b = df_b[auswahl].mean()
+min_b = df_b[auswahl].min()
+max_b = df_b[auswahl].max()
+count_b = df_b[auswahl].count()
+
+# In zwei Spalten anzeigen
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader(f"{stadt_a}")
+    st.metric("Mittelwert", f"{mean_a:.2f}")
+    st.metric("Minimum", f"{min_a:.2f}")
+    st.metric("Maximum", f"{max_a:.2f}")
+    st.caption(f"{count_a} Monatswerte")
+
+with col2:
+    st.subheader(f"{stadt_b}")
+    st.metric("Mittelwert", f"{mean_b:.2f}")
+    st.metric("Minimum", f"{min_b:.2f}")
+    st.metric("Maximum", f"{max_b:.2f}")
+    st.caption(f"{count_b} Monatswerte")
