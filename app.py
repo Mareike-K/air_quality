@@ -153,3 +153,33 @@ with col2:
     st.metric("Minimum", f"{min_b:.2f}")
     st.metric("Maximum", f"{max_b:.2f}")
     st.caption(f"{count_b} Monatswerte")
+
+st.markdown("## 🔍 Langfristige Entwicklung (Trend aus Zeitreihenzerlegung)")
+st.caption("Visualisierung der PM2.5-Trendlinie auf Basis monatlicher Mittelwerte")
+
+# Abschnittstrennung im Dashboard: Trendlinien
+
+# Trenddaten laden
+df_trend = pd.read_csv("data/trendlinien_pm25.csv")
+df_trend["Datum"] = pd.to_datetime(df_trend["Datum"])
+
+# Daten für Stadt A und B
+trend_a = df_trend[df_trend["City"] == stadt_a]
+trend_b = df_trend[df_trend["City"] == stadt_b]
+
+# Plot erstellen
+fig_trend, ax_trend = plt.subplots()
+
+# Linien plotten
+ax_trend.plot(trend_a["Datum"], trend_a["Trend"], label=f"{stadt_a}", color=farbe_a, linewidth=2)
+ax_trend.plot(trend_b["Datum"], trend_b["Trend"], label=f"{stadt_b}", color=farbe_b, linewidth=2)
+
+# Styling
+ax_trend.set_title(f"PM2.5-Trend in {stadt_a} vs. {stadt_b}")
+ax_trend.set_xlabel("Jahr")
+ax_trend.set_ylabel("Trend (PM2.5)")
+ax_trend.legend()
+ax_trend.grid(True)
+
+# Anzeigen
+st.pyplot(fig_trend)
