@@ -1,3 +1,13 @@
+# Data Dictionary
+
+This file contains an overview of all variables used in the project. It includes:
+- Column names and descriptions
+- Available pollutant and weather types
+- Meteostat weather variable definitions
+- ISO-3166-2 country codes
+- Data source references
+
+
 # Spaltennamen
 
 | Spalte    |           | Beschreibung                                                      |
