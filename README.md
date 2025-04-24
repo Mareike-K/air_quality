@@ -19,20 +19,27 @@ This project was developed as part of a Data Science portfolio course and serves
 
 ```bash
 AIR_QUALITY/
-├── data/                     # Downloaded data (air quality, population, weather)
-├── Images/                   # Visualizations and presentation graphics
-├── Präsentationen/           # Presentation files
-├── .venv/                    # Virtual environment
-├── Clusteranalyse_big.ipynb  # Clustering analysis (large dataset)
-├── EDA.ipynb                 # Exploratory data analysis
-├── data_HowTo.ipynb          # Instructions for data sources & manual download
-├── data_preparation.py       # Data cleaning and transformation script
-├── main.py                   # Main entry point (for app execution)
-├── pyproject.toml            # Project configuration (Python 3.11, dependencies)
-├── README.md                 # This documentation
-├── test_data_preparation.py  # Unit tests (pytest)
-├── uv.lock                   # Lockfile for uv dependency manager
-└── Glossar.md                # Data dictionary and metadata
+├── data/                           # Downloaded data (air quality, population, weather)
+├── Images/                         # Visualizations and presentation graphics
+├── Präsentationen/                 # Presentation files
+├── .venv/                          # Virtual environment
+├── 0_data_cleaning.ipynb           # Data cleaning
+├── 1_EDA_exploration.ipynb         # First visual inspection, outlier removal
+├── 2_EDA_correlations.ipynb        # Relationships between variables
+├── 3_feature_engineering.ipynb     # Feature transformations for linear regression
+├── 4_cluster_analysis.ipynb        # K-Means clustering
+├── 5_classification_models.ipynb   # Classification models
+├── 6_time_series_analysis.ipynb    # Times series analysis
+├── 7_dashboard.ipynb               # dashboard vor key visuals
+├── app.py                          # script for running dashboard app 
+├── data_how-to.ipynb               # Instructions for data sources & manual download
+├── data_preparation.py             # script for data import, cleaning and transformation
+├── Glossar.md                      # Data dictionary and metadata
+├── main.py                         # Main entry point (for app execution)
+├── pyproject.toml                  # Project configuration (Python 3.11, dependencies)
+├── README.md                       # This documentation
+├── test_data_preparation.py        # Unit tests (pytest)
+└── uv.lock                         # Lockfile for uv dependency manager
 ```
 
 ---
