@@ -1,146 +1,105 @@
-# Air Quality by Mareike and Wiebke
+# Air Quality Data for Showcasing Data Science Tools
 
-Dieses Projekt entstand im Rahmen des Kurses 'PortfolioProjekte' bei stackfuel.
-Unser Ziel war es, die in den vorangegangenen Monaten erlernten Fähigkeiten zu festigen und zu erweitern.
-Wir haben uns ganz bewusst entschieden, mit sehr rohen Daten zu arbeiten und keinen 'fertigen' Datensatz zu nutzen. Wohl wissend, dass dabei der DataScience-Bereich etwas kürzer kommen könnte.
+## 📌 Project Goal
 
-## Inhaltsverzeichnis
-
-- [Projektüberblick](#projektüberblick)
-- [Projektstruktur](#projektstruktur)
-- [Voraussetzungen](#voraussetzungen)
-- [Installation](#installation)
-- [Daten herunterladen](#daten-herunterladen)
-- [Explorative Datenanalyse (EDA)](#EDA)
-- [Testen](#testen)
-- [Verwendete Technologien und Bibliotheken](#Glossar)
-- [Kontakt](#kontakt)
+This project was developed as part of a Data Science portfolio course and serves as a demonstration of our data analysis and data science skills. Our goal was to show that we can work with any kind of data – especially with messy, real-world datasets. This means we deliberately chose semi-structured data sources to practice the entire data science workflow: from data acquisition and cleaning to modeling and visualization.
 
 ---
 
-## Projektüberblick
+## 🌍 Data Sources
 
-Lernziel: erlerntes Wissen festigen, Umgang mit API-Daten, Deskriptive Analyse und Vorhersagen
-Analyseziel: 
-Einfluss von Wetterdaten auf die Schadstoffbelastung der Luft
-in Städten (weltweit)
-im Zeitraum 2015 bis 2024.
+- [AQICN COVID-19 Global Air Quality Dataset](https://aqicn.org/data-platform/covid19/)
+- [AQICN API](https://aqicn.org/api/de/)
+- [UN City Population Dataset](https://datahub.io/core/population-city#unsd-citypopulation-year-both)
+- [Meteostat Python Library](https://dev.meteostat.net/)
 
-<i> 
-ggf Unterziel:
-Prognose an welchen Tagen in 2025 ist eine erhöhter Feinstaubwert zu erwarten?
-Welches 'dreckigste' Stadt Deutschlands (nach Ortsgrößenklasse)?
-Haben sich die Werte in den letzten Jahren deutlich verändert? Bspw seit 2019?
-Hat HomeOffice/ Pandemie einen Einfluss auf die Feinstaubbelastung?
-</i>
+---
 
+## 🧱 Project Structure
 
-## Projektstruktur
-
-Die Projektstruktur ist wie folgt organisiert:
-
-```
+```bash
 AIR_QUALITY/
-├── .venv/
-├── data/
-├── Images
-├── Präsentationen
-├── .gitignore
-├── .python-version
-├── Clusteranalyse_big.ipynb 
-├── data_preparation.py
-├── data_HowTo.ipynb
-├── EDA.ipynb 
-├── Glossar.md
-├── main.py
-├── pyproject.toml
-├── README.md
-├── test_data_preparations.py
-└── uv.lock
+├── data/                     # Downloaded data (air quality, population, weather)
+├── Images/                   # Visualizations and presentation graphics
+├── Präsentationen/           # Presentation files
+├── .venv/                    # Virtual environment
+├── Clusteranalyse_big.ipynb  # Clustering analysis (large dataset)
+├── EDA.ipynb                 # Exploratory data analysis
+├── data_HowTo.ipynb          # Instructions for data sources & manual download
+├── data_preparation.py       # Data cleaning and transformation script
+├── main.py                   # Main entry point (for app execution)
+├── pyproject.toml            # Project configuration (Python 3.11, dependencies)
+├── README.md                 # This documentation
+├── test_data_preparation.py  # Unit tests (pytest)
+├── uv.lock                   # Lockfile for uv dependency manager
+└── Glossar.md                # Data dictionary and metadata
 ```
 
-- **`.venv/`**: Virtuelle Python-Umgebung für das Projekt.
-- **`data/`**: Ordner für die heruntergeladenen Datensätze.
-- **`Images/`**: Ordner für Bilder
-- **`.gitignore`**: Definiert, welche Dateien von der Versionskontrolle ausgeschlossen werden.
-- **`.python-version`**: Spezifiziert die Python-Version (>=3.11).
-- **`Clusteranalyse_big.ipynb`**: Notebook für die Clusteranalysen.
-- **`data_preparation.py`**: Skript zum Herunterladen, Importieren und Cleanen der Datensätze.
-- **`data_HowTo.ipynb`**: Jupyter Notebook mit ANleitung für manuellen Datandownload und Angaben über Datenquellen.
-- **`EDA.ipynb`**: Notebook für die Explorative DatenAnalyse.
-- **`Glossar.md`**: Enthält das Datenwörterbuch und Quellen.
-- **`Main.py`**: Relevant um Projekt außerhalb von VSCode zu starten.
-- **`pyproject.toml`**: Projektkonfigurationsdatei mit Abhängigkeiten.
-- **`README.md`**: Diese Dokumentation.
-- **`test_data_preparation.py`**: Testskript für die data_preparation-Funktionen unter Verwendung von pytest.
-- **`uv.lock`**: Lock-Datei für den Paketmanager uv.
+---
 
-## Voraussetzungen
+## 🧪 Notebooks & Analyses
 
-Für dieses Projekt wird Python und der Paketmanager uv benötigt. 
-Alle weiteren Abhängigkeiten sind in der `pyproject.toml` Datei bzw. in der `uv.lock` dokumentiert.
+| Notebook / Script | Content |
+|-------------------|---------|
+| `0_data_cleaning` | Data acquisition, cleaning, merging from multiple sources |
+| `1_eda_exploration` | Descriptive statistics, outlier removal, visual inspection |
+| `2_eda_correlations` | Pearson correlation, pairplots, variable relationship insights |
+| `3_feature_engineering` | Linear regression on Hamburg air quality with R² improvement from 0.07 to 0.31 through feature transformations |
+| `4_cluster_analysis` | K-Means clustering of cities based on pollutant data |
+| `5_classification_models` | Predicting “good” vs. “bad” air quality using logistic regression, random forest, and gradient boosting |
+| `6_time_series_analysis` | Seasonal decomposition of PM2.5 trends for Hamburg and Atlanta |
+| `7_dashboard` | First version of an interactive Streamlit dashboard (work in progress) |
 
+---
 
-## Datenquellen
+## 🧪 Testing
 
-- [Air Quality Historical Data Platform: Institution & University Registration](https://aqicn.org/data-platform/covid19/)
-- https://aqicn.org/api/de/ 
-- Offene Datenplattform für Luftqualität: Weltweiter COVID-19-Datensatz
-- https://datahub.io/core/population-city#unsd-citypopulation-year-both
-- Python Library | Meteostat Developers
+We used `pytest` to test the data preparation pipeline.
 
-## SSL-Zertifikate für Wetterdaten (Mac)
-Wenn SSL-Zertifikate nicht verifiziert werden können, müssen u.U. die Zertifikate erneuert werden. Wenn übliche Methoden nicht funktionieren:
-Versteckte Dateien anzeigen lassen.
-Projektordner > .venv > bin > Suche: "Install Certificates.command" > Doppelklick
-(s. StackOverflow: https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org)
+To run tests:
 
-## Analysen
-## Explorative Datenanalyse (EDA)
-1_eda_exploration.ipynb: Überblick über den Datensatz und die Variablen; deskriptive Statistik und Ausreißerentfernung
-## Korrelationsanalysen
-2_eda_correlations.ipynb: Pearson-Matrix, Pairplots; Visuelle Analyse ausgewählter Variablenpaare
-## Feature Engineering für lineare Regression: Luftqualität in Hamburg
-Dieses Notebook zeigt, wie sich ein einfaches Regressionsmodell durch gezieltes Feature Engineering deutlich verbessern lässt. Anhand von Wetter- und Luftschadstoffdaten aus Hamburg wird Schritt für Schritt demonstriert, wie sich durch Transformationen, zeitliche Kodierung und nichtlineare Erweiterungen die Vorhersagegüte steigern lässt – von einem anfänglichen $R^2% von 0.07 auf über 0.31.
-## Clusteranalyse
-4_clusteranalysis.ipynb: 
-## Klassifikationsmodelle
-5_classification.ipynb: Vorhersage gute vs schlechte Luft auf Grundlage von PM2.5-Wert; logistische Regression, Random Forest, Gradient Boosting
-## Zeitreihenanalyse
-6_time_series.ipynb: Entwicklung der Feinstaubwerte in Hamburg und München 2015-2024
+```bash
+uv run -m pytest
+```
 
+This ensures that the core pipeline (download → clean → merge) functions correctly and is reproducible.
 
-## Testen
+---
 
-- **`test_data_preparation.py`**: Enthält Tests für Daten-Download, -Import und -Cleaning unter Verwendung von pytest. Ergebnis: finaler Datensatz für die umgesetzten und zukünftige Analysen.
-- **Tests ausführen**: im Terminal */air_quality/ pytest
+## 🛠️ Tools & Technologies
 
-  ```bash
-  uv run -m pytest
-  ```
+- **Language**: Python 3.11
+- **Environment**: VS Code, virtual environment managed via `uv`
+- **Development**: Jupyter Notebooks + Python Scripts
+- **Packages**:
+  - `pandas`, `numpy` – data manipulation
+  - `matplotlib`, `seaborn`, `plotly` – visualization
+  - `scikit-learn` – machine learning (classification, clustering)
+  - `statsmodels` – time series decomposition
+  - `geopandas` – geospatial data
+  - `pytest` – testing
+  - `streamlit` – interactive dashboard
 
+---
 
-''' im Terminal */air_quality/ pytest'''
+## 🚧 Planned Extensions
 
-  Dies führt die Tests aus und stellt sicher, dass die Pipeline-Komponenten korrekt funktionieren.
+- Interactive dashboard with filters for city, season, and pollutant
+- Additional ML approaches (e.g., Neural Networks)
+- Translation of the entire repository into English (currently mixed)
 
-## Verwendete Technologien und Bibliotheken
+---
 
-- **Python 3.11**: Programmiersprache.
-- **uv**: Paketmanager für Python.
-- **Jupyter Notebook**: Interaktive Entwicklungsumgebung.
-- **Pandas**: Datenanalyse und -manipulation.
-- **NumPy**: Numerische Berechnungen.
-- **Matplotlib & Seaborn**: Datenvisualisierung.
-- **Scikit-Learn**: Maschinelles Lernen.
-- **Statsmodels**: Statistische Modellierung.
-- **meteostats**: Klimadaten für Städte
-- **geopandas**: Koordinaten zum plotten von Karten.
-- **Plotly**: Interaktive Visualisierungen.
-- **pytest**: Framework zum Testen von Python-Code.
+## 📖 Reusability & Documentation
 
-## Kontakt
+All steps are clearly documented and include:
+- Explanations of the reasoning behind transformations and model decisions
+- Reusable code structured in functions and modular notebooks
+- A data dictionary in `Glossar.md` for reference
 
-Mareike Keller https://github.com/Mareike-K
+---
 
-Wiebke Sir https://github.com/whypkey
+## 🤝 Authors
+
+- [Mareike Keller](https://github.com/Mareike-K)  
+- [Wiebke Sir](https://github.com/whypkey)
