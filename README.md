@@ -13,6 +13,20 @@ This project was developed as part of a Data Science portfolio course and serves
 - [UN City Population Dataset](https://datahub.io/core/population-city#unsd-citypopulation-year-both)
 - [Meteostat Python Library](https://dev.meteostat.net/)
 
+➡️ All source data can be downloaded automatically using the `download_files()` function in `data_preparation.py`. Downloaded files will be stored in the `data/` directory.
+
+---
+
+## 📚 Background Resources
+
+For more detailed information on the data context and interpretation:
+
+- [AQI Documentation (AirNow.gov)](https://document.airnow.gov/technical-assistance-document-for-the-reporting-of-daily-air-quailty.pdf)  
+  → Technical details on how the Air Quality Index (AQI) is calculated and used.
+
+- [UN City Population Dataset](https://datahub.io/core/population-city#unsd-citypopulation-year-both)  
+  → Source of urban population data used in this project.
+
 ---
 
 ## 🧱 Project Structure
@@ -21,8 +35,7 @@ This project was developed as part of a Data Science portfolio course and serves
 AIR_QUALITY/
 ├── data/                           # Downloaded data (air quality, population, weather)
 ├── Images/                         # Visualizations and presentation graphics
-├── Präsentationen/                 # Presentation files
-├── .venv/                          # Virtual environment
+├── presentations/                 # Presentation files
 ├── 0_data_cleaning.ipynb           # Data cleaning
 ├── 1_EDA_exploration.ipynb         # First visual inspection, outlier removal
 ├── 2_EDA_correlations.ipynb        # Relationships between variables
@@ -32,12 +45,11 @@ AIR_QUALITY/
 ├── 6_time_series_analysis.ipynb    # Times series analysis
 ├── 7_dashboard.ipynb               # dashboard vor key visuals
 ├── app.py                          # script for running dashboard app 
-├── data_how-to.ipynb               # Instructions for data sources & manual download
+├── data_dictionary.md              # Data dictionary and metadata
 ├── data_preparation.py             # script for data import, cleaning and transformation
-├── Glossar.md                      # Data dictionary and metadata
 ├── main.py                         # Main entry point (for app execution)
 ├── pyproject.toml                  # Project configuration (Python 3.11, dependencies)
-├── README.md                       # This documentation
+├── README.md                       # This document
 ├── test_data_preparation.py        # Unit tests (pytest)
 └── uv.lock                         # Lockfile for uv dependency manager
 ```
@@ -46,7 +58,7 @@ AIR_QUALITY/
 
 ## 🧪 Notebooks & Analyses
 
-| Notebook / Script | Content |
+| Notebook | Content |
 |-------------------|---------|
 | `0_data_cleaning` | Data acquisition, cleaning, merging from multiple sources |
 | `1_eda_exploration` | Descriptive statistics, outlier removal, visual inspection |
@@ -102,7 +114,7 @@ This ensures that the core pipeline (download → clean → merge) functions cor
 All steps are clearly documented and include:
 - Explanations of the reasoning behind transformations and model decisions
 - Reusable code structured in functions and modular notebooks
-- A data dictionary in `Glossar.md` for reference
+- A data dictionary in `data_dictionary.md` for reference
 
 ---
 
