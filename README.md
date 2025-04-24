@@ -35,18 +35,18 @@ For more detailed information on the data context and interpretation:
 AIR_QUALITY/
 ├── data/                           # Downloaded data (air quality, population, weather)
 ├── Images/                         # Visualizations and presentation graphics
-├── presentations/                 # Presentation files
+├── presentations/                  # Presentation files
 ├── 0_data_cleaning.ipynb           # Data cleaning
-├── 1_EDA_exploration.ipynb         # First visual inspection, outlier removal
+├── 1_EDA_exploration.ipynb         # Initial visual inspection, outlier removal
 ├── 2_EDA_correlations.ipynb        # Relationships between variables
 ├── 3_feature_engineering.ipynb     # Feature transformations for linear regression
 ├── 4_cluster_analysis.ipynb        # K-Means clustering
 ├── 5_classification_models.ipynb   # Classification models
 ├── 6_time_series_analysis.ipynb    # Times series analysis
-├── 7_dashboard.ipynb               # dashboard vor key visuals
-├── app.py                          # script for running dashboard app 
+├── 7_dashboard.ipynb               # First ideas for dashboard with key visuals
+├── app.py                          # Script for running dashboard app 
 ├── data_dictionary.md              # Data dictionary and metadata
-├── data_preparation.py             # script for data import, cleaning and transformation
+├── data_preparation.py             # Script for data import, cleaning and transformation
 ├── main.py                         # Main entry point (for app execution)
 ├── pyproject.toml                  # Project configuration (Python 3.11, dependencies)
 ├── README.md                       # This document
@@ -56,32 +56,15 @@ AIR_QUALITY/
 
 ---
 
-## 🧪 Notebooks & Analyses
-
-| Notebook | Content |
-|-------------------|---------|
-| `0_data_cleaning` | Data acquisition, cleaning, merging from multiple sources |
-| `1_eda_exploration` | Descriptive statistics, outlier removal, visual inspection |
-| `2_eda_correlations` | Pearson correlation, pairplots, variable relationship insights |
-| `3_feature_engineering` | Linear regression on Hamburg air quality with R² improvement from 0.07 to 0.31 through feature transformations |
-| `4_cluster_analysis` | K-Means clustering of cities based on pollutant data |
-| `5_classification_models` | Predicting “good” vs. “bad” air quality using logistic regression, random forest, and gradient boosting |
-| `6_time_series_analysis` | Seasonal decomposition of PM2.5 trends for Hamburg and Atlanta |
-| `7_dashboard` | First version of an interactive Streamlit dashboard (work in progress) |
-
----
-
 ## 🧪 Testing
 
-We used `pytest` to test the data preparation pipeline.
+We used `pytest` to ensure that the core pipeline (download → clean → merge) functions correctly and is reproducible.
 
 To run tests:
 
 ```bash
 uv run -m pytest
 ```
-
-This ensures that the core pipeline (download → clean → merge) functions correctly and is reproducible.
 
 ---
 
@@ -100,6 +83,44 @@ This ensures that the core pipeline (download → clean → merge) functions cor
   - `streamlit` – interactive dashboard
 
 ---
+
+## 📊 Results & Key Findings
+
+The analysis of global air quality data (2015–2024) revealed several key insights across multiple analytical steps. Below are the most important findings from each stage of the project:
+
+- **Correlation analysis** revealed strong and interpretable relationships:
+  - PM10 and PM2.5 are highly correlated (r = 0.84), as expected due to compositional overlap.
+  - NO₂ is moderately correlated with both PM values (r ≈ 0.42–0.49), likely due to shared emission sources such as traffic and industry.
+  - Temperature variables (Tavg, Tmin, Tmax) show strong intercorrelations (r ≥ 0.90), suggesting redundancy.
+  - Dew point correlates strongly with temperature (especially Tmin), highlighting their meteorological connection.
+  - Air pressure correlates moderately negatively with dew point and temperature.
+  → These findings supported informed feature selection and confirmed the data's consistency.
+
+- **Feature engineering on the Hamburg dataset** significantly improved the predictive power of a linear regression model for PM2.5:
+  - Through transformations, nonlinear terms (e.g. quadratic ozone), and temporal features (e.g. month, season), the model's R² increased from **0.072 to 0.313**.
+  - This represents an improvement of over **330%**, demonstrating the strong impact of thoughtful feature design.
+
+- **K-Means clustering (k=6)** grouped cities into distinct air pollution profiles based on key pollutants:
+  - **Cluster 0**: Very clean air – mainly cities in Australia, New Zealand, and Canada; associated with low emissions and good ventilation.
+  - **Cluster 1**: Urban but clean – cities in Europe, Japan, and the US, characterized by moderate ozone and PM2.5 levels.
+  - **Cluster 2**: High ozone and NO₂ – e.g., South Korea and Southern Europe; likely driven by traffic and photochemical smog.
+  - **Cluster 3**: Mixed particle pollution – Southeast Asia, South Africa, and parts of Latin America; possibly linked to residential heating and industry.
+  - **Cluster 4**: Gas-dominated pollution (CO, SO₂, NO₂) – especially in Iran, Turkey, and Israel.
+  - **Cluster 5**: Extreme particulate pollution – cities in China, India, and the UAE; driven by industrial activity, urbanization, and inversion weather conditions.
+
+- **Classification of air quality (PM2.5: good vs. bad)** was performed using three models:
+  - Logistic regression, random forest, and gradient boosting were compared.
+  - Feature engineering improved performance across all models.
+  - While overall performance was similar, non-linear models (RF, GBM) were better suited for the underlying variable structure.
+  - Highly correlated features such as PM10 added little new information and were critically assessed to avoid redundancy.
+
+- **Time series decomposition** of PM2.5 values was conducted for Hamburg and Atlanta:
+  - Hamburg provided a mostly complete dataset, while other cities (e.g. Munich) contained too many gaps for meaningful analysis.
+  - The decomposition (using STL and seasonal_decompose) helped uncover long-term trends and seasonal patterns despite high day-to-day variability.
+  - The analysis confirmed that high-quality, continuous data is essential for reliable time series modeling.
+
+---
+
 
 ## 🚧 Planned Extensions
 
